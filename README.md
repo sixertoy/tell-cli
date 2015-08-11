@@ -14,7 +14,7 @@ npm install -g tdd-desciptor
 ## Usage
 
 ```bash
-udescribe spc
+udescribe spec
 ```
 
 ## Issues
