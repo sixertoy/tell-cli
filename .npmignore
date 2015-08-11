@@ -1,0 +1,10 @@
+!bin
+!bin/
+!bin/*
+grunt/
+src/
+.editorconfig
+.gitattributes
+.gitignore
+.jshintrc
+Gruntfile.js

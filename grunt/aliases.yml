@@ -1,0 +1,6 @@
+default:
+  - clean:nodebin
+  - jshint:all
+  - wrap:nodebin
+  - rename:nodebin
+  - watch

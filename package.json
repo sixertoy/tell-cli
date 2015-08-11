@@ -1,0 +1,55 @@
+{
+  "name": "tdd-descriptor",
+  "version": "0.1.0",
+  "description": "YML files describes TDD cases",
+  "bin": {
+    "udescribe": "./bin/tdd-descriptor"
+  },
+  "scripts": {
+    "clean": "rm -rf node_modules",
+    "start": "grunt wrap"
+  },
+  "engines": {
+    "node": ">=0.12.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sixertoy/tdd-yml-description-generator"
+  },
+  "keywords": [
+    "grunt"
+  ],
+  "author": [
+    {
+      "name": "sixertoy",
+      "email": "sixertoy.github@gmail.com"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sixertoy/tdd-yml-description-generator/issues"
+  },
+  "homepage": "https://github.com/sixertoy/tdd-yml-description-generator",
+  "dependencies": {
+    "class-extend": "",
+    "js-yaml": "^3.3.1",
+    "lodash": "",
+    "object-assign": ""
+  },
+  "devDependencies": {
+    "grunt": "",
+    "grunt-bump": "",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-connect": "",
+    "grunt-contrib-jshint": "",
+    "grunt-contrib-watch": "",
+    "grunt-coveralls": "",
+    "grunt-jasmine-node-coverage": "",
+    "grunt-jsbeautifier": "",
+    "grunt-markdown": "",
+    "grunt-rename": "^0.1.4",
+    "grunt-wrap": "^0.3.0",
+    "load-grunt-config": "",
+    "sinon": ""
+  }
+}
