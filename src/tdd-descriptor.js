@@ -1,5 +1,5 @@
 /*jshint unused: false */
-/*jslint indent: 4, nomen: true */
+/*jslint indent: 4, nomen: true, plusplus: true */
 /*globals process, require, console */
 (function () {
 
@@ -7,22 +7,22 @@
 
     var // variables
         defaults = {
-            count: '', // nombre de documents a traiter
+            files: [], // nombre de documents a traiter
             indent: '    ',
-            generate: false,
-            always_yes: false,
+            generate: false, // doit generer les fichiers de spec
+            always_yes: false, // overwite sans prompt
             cwd: process.cwd(),
             input_extension: '.js',
             spec_extension: '.spec.js'
         },
         semver = '0.1.1',
         dfile = 'description.yml',
+        args = process.argv.slice(2),
         // requires
         path = require('path'),
         chalk = require('chalk'),
         fse = require('fs-extra'),
         yaml = require('js-yaml'),
-        args = process.argv.slice(2),
         inquirer = require('inquirer'),
         esformatter = require('esformatter'),
         // templates
@@ -52,77 +52,14 @@
      * Pour sortir proprement du process
      *
      */
+    /*
     function promiseResolved(file) {
         process.stderr.write(chalk.bold('info: ') + 'file has been written\n');
         defaults.count--;
         if (defaults.count <= 0) {
-            process.exit(0);
         }
     }
-
-    /**
-     *
-     * Creation d'un fichier de test
-     *
-     */
-    function write(content, file) {
-        var abspath, wstream;
-        try {
-            // si le fichier existe
-            // et que l'option est toujours à yes pour l'overwrite
-            if (defaults.always_yes) {
-                // overwrite
-                process.stderr.write(chalk.gray('writing: ' + file + '\n'));
-                fse.removeSync(file);
-                fse.outputFileSync(file, content, {
-                    encoding: 'utf8'
-                });
-                return false;
-            } else {
-                // overwrite
-                // @TODO fix prompt async
-                return {
-                    type: 'confirm',
-                    name: 'overwrite',
-                    message: file + ' will be overwritten, continue ?',
-                    default: true,
-                    filter: function(ans){
-                        console.log('filter');
-                        if(ans){
-                            return file;
-                        } else {
-                            return false;
-                        }
-                        /*
-                        if(ans){
-                            fse.removeSync(file);
-                            fse.outputFileSync(file, content, {
-                                encoding: 'utf8'
-                            });
-                            promiseResolved(file);
-                        } else {
-                            process.stderr.write(chalk.yellow.bold('warn: ') + chalk.yellow('file ' + file + ' would not be updated\n'));
-                            return false;
-                        }
-                        */
-                    }
-                };
-            }
-
-        } catch (e) {
-            // @TODO if file is ENOENT uniquement
-            // creation du folder du fichier de test
-            try {
-                process.stderr.write(chalk.gray('writing: ' + file + '\n'));
-                fse.outputFileSync(file, content, {
-                    encoding: 'utf8'
-                });
-                return false;
-            } catch (err) {
-                throwloaderr(err);
-            }
-        }
-    }
+    */
 
     function methods(keys, object) {
         var content = '';
@@ -134,14 +71,70 @@
 
     /**
      *
+     * Creation d'un fichier de test
+     *
+     */
+    function write(content, file, index) {
+        var abspath, wstream, stats;
+        //
+        // if file exists
+        // won't throw an exception
+        try {
+            stats = fse.statSync(file);
+            // si le fichier existe
+            // et que l'option est toujours à yes pour l'overwrite
+            if (defaults.always_yes) {
+                // overwrite
+                process.stderr.write(chalk.gray('writing: ' + file + '\n'));
+                fse.removeSync(file);
+                fse.outputFileSync(file, content, {
+                    encoding: 'utf8'
+                });
+                process.stderr.write(chalk.bold.gray('info: ') + chalk.bold.gray('file has been written\n'));
+                return false;
+            } else {
+                // overwrite
+                // @TODO fix prompt async
+                return {
+                    type: 'confirm',
+                    name: 'overwrite_' + index,
+                    message: file + ' will be overwritten, continue ?',
+                    default: false
+                };
+            }
+
+        } catch (e) {
+            // if file doesn't exists
+            if (!stats && e.code === 'ENOENT') {
+                // creation du folder du fichier de test
+                try {
+                    process.stderr.write(chalk.gray('writing: ' + file + '\n'));
+                    fse.outputFileSync(file, content, {
+                        encoding: 'utf8'
+                    });
+                    process.stderr.write(chalk.bold.gray('info: ') + chalk.bold.gray('file has been written\n'));
+                    return false;
+                } catch (err) {
+                    throwloaderr(err);
+                }
+            } else {
+                throwloaderr(e);
+            }
+        }
+
+    }
+
+    /**
+     *
      * Parse le document yml
      * Pour créer les fichiers de tests
      *
      */
     function parse(document) {
 
-        var parts, input_file, file_content, output_file, formatted, result,
+        var input_file, file_content, output_file, formatted, result,
             child_keys, // represente le champs describe/it
+            files = [],
             questions = [],
             spec_files_keys = Object.keys(document);
 
@@ -150,75 +143,86 @@
         // si la pile atteint 0
         // on renvoi un process.exit(0)
         // pour sortir proprement du terminal
-        defaults.count = spec_files_keys.length;
+        // defaults.count = spec_files_keys.length;
 
-        if (defaults.count) {
-            spec_files_keys.forEach(function (file) {
+        spec_files_keys.forEach(function (file, index) {
+            // nom du fichier de sortie
+            // d'un test
+            output_file = [
+                defaults.root,
+                path.dirname(file),
+                path.basename(file, defaults.input_extension)
+            ].join(path.sep);
+            output_file = path.normalize(output_file) + defaults.spec_extension;
 
-                parts = [
-                    defaults.root,
-                    path.dirname(file),
-                    path.basename(file, defaults.input_extension)
-                ];
-
-                output_file = parts.join(path.sep) + defaults.spec_extension;
-                output_file = path.normalize(output_file);
-
-                file_content = header_tpl;
-                //
-                // child_keys = Object.keys(document[file]);
-                //
-                // si le type de la description
-                // est une chaine de caracteres
-                //
-                // si la description est de type string
-                // il s'agit alors du champs de type it
-                /*
-                if (typeof (child_keys) === 'string') {
-                    // @TODO
-                    file_content += parseIt(child_keys);
-                } else {
-                    // sinon c'est un objet
-                    // il s'agit d'un champs de type describe
-                    // dans ce cas on doit faire une recursion
-                    // sur les enfants du noeud
-                    file_content += parseDescribe(child_keys, document[file]);
-                }
-                */
-                file_content += footer_tpl;
-                formatted = esformatter.format(file_content, {
-                    indent: {
-                        value: defaults.indent
-                    }
-                });
-                //
-                // write file
-                result = write(formatted, output_file);
-                // si le resultat est une pomesse
-                if (result) {
-                    // on ajout une question
-                    // les question viennent apres la boucle
-                    questions.push(result);
-                } else {
-                    // sinon on informe que le fichier
-                    // a bien etait ecrit
-                    promiseResolved(file);
+            file_content = header_tpl;
+            //
+            // child_keys = Object.keys(document[file]);
+            //
+            // si le type de la description
+            // est une chaine de caracteres
+            //
+            // si la description est de type string
+            // il s'agit alors du champs de type it
+            /*
+            if (typeof (child_keys) === 'string') {
+                // @TODO
+                file_content += parseIt(child_keys);
+            } else {
+                // sinon c'est un objet
+                // il s'agit d'un champs de type describe
+                // dans ce cas on doit faire une recursion
+                // sur les enfants du noeud
+                file_content += parseDescribe(child_keys, document[file]);
+            }
+            */
+            file_content += footer_tpl;
+            formatted = esformatter.format(file_content, {
+                indent: {
+                    value: defaults.indent
                 }
             });
-            if(questions.length){
-                inquirer.prompt(questions, function(answers){
-                    console.log(answers);
-                });
+            //
+            // write file
+            files.push([formatted, output_file]);
+            result = write(formatted, output_file, index);
+            // si le resultat est une pomesse
+            if (result) {
+                // on ajout une question
+                // les question viennent apres la boucle
+                questions.push(result);
             }
-            // si aucune question le process est deja ferme
-            // par promiseResolved();
+        });
+        // si il y a des question
+        // on envoi le prompt pour l'user
+        if (questions.length) {
+            inquirer.prompt(questions, function (answers) {
+                files.forEach(function (a, i) {
+                    if (answers.hasOwnProperty('overwrite_' + i)) {
+                        if (answers['overwrite_' + i]) {
+                            process.stderr.write(chalk.gray('writing: ' + a[1] + '\n'));
+                            fse.removeSync(a[1]);
+                            fse.outputFileSync(a[1], a[0], {
+                                encoding: 'utf8'
+                            });
+                            process.stderr.write(chalk.bold.gray('info: ') + chalk.bold.gray('file has been written\n'));
+                        } else {
+                            process.stderr.write(chalk.yellow.bold('warn: ') + chalk.yellow('file ' + a[1] + ' would not be updated\n'));
+                        }
+                    }
+                });
+                process.exit(0);
+            });
+        } else {
+            // exit
+            process.exit(0);
         }
     }
 
     /**
      *
-     * Par defaul
-     *
+     * Par defaut
+     * Au lance du cli sans options
      * Affichage dans la console
      * du fichier YAML
      *

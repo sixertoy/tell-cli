@@ -8,7 +8,7 @@ module.exports = {
     },
     wrap: {
         files: ['./src/**/*.js'],
-        tasks: ['clean:nodebin', 'jshint:all', 'wrap:nodebin', 'rename:nodebin']
+        tasks: ['build']
     }
 };
 
