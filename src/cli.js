@@ -170,7 +170,7 @@
                     value: defaults.indent
                 }
             },
-            compiled = _('/*jshint unused: false */\n/*jslint indent: 4, nomen: true */\n/*global __dirname, jasmine, process, require, define, describe, xdescribe, it, xit, expect, beforeEach, afterEach, afterLast, console */\n(function(){\n\t\'use strict\';\n\tvar cwd = process.cwd(),\path = require(\'path\'),\nexpect = require(\'chai\'),\nnsinon = require(\'sinon\'),\n<%= name %> = require(path.join(cwd, \'<%= file %>\'));\n\ndescribe(\'<%- name %>\', function(){\n\nbeforeEach(function(){});afterEach(function(){});<%= body %>});\n\n}());\n');
+            compiled = _('/*jshint unused: false */\n/*jslint indent: 4, nomen: true */\n/*global __dirname, jasmine, process, require, define, describe, xdescribe, it, xit, expect, beforeEach, afterEach, afterLast, console */\n(function(){\n\t\'use strict\';\n\tvar cwd = process.cwd(),\path = require(\'path\'),\nexpect = require(\'chai\'),\nsinon = require(\'sinon\'),\n<%= name %> = require(path.join(cwd, \'<%= file %>\'));\n\ndescribe(\'<%- name %>\', function(){\n\nbeforeEach(function(){});afterEach(function(){});<%= body %>});\n\n}());\n');
 
         spec_files.forEach(function (spec_file) {
 
