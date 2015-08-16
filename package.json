@@ -2,6 +2,7 @@
   "name": "tdd-descriptor",
   "version": "0.1.2",
   "description": "YML files describes TDD cases",
+  "preferGlobal": true,
   "bin": {
     "tell": "./bin/cli"
   },
