@@ -3,7 +3,7 @@
 [![Built with Grunt][grunt-img]](http://gruntjs.com/) [![MIT License][license-img]][license-url]
 
 > Generates [Mocha](https://mochajs.org) files from an YML description file<br>
-> Provides an easy way to describe/write/anticipate your units test's cases
+> Provides an easy way to describe your stories
 
 ## Install
 
@@ -12,6 +12,8 @@ npm install -g tell-cli
 ```
 
 ## Usages
+
+> An yaml **stories.yml** file as describe [below](#stories.yml) must be place in <spec | tests |...> folder
 
 ```bash
 # output stories in console, doesn't generate spec files
@@ -22,6 +24,30 @@ tell spec -g
 # doesn't prompts
 tell spec --generate --yes
 tell spec -g -Y
+```
+
+<a name="stories.yml"></a>
+### stories.yml
+
+```yml
+src/filename.js:
+  render:
+    - throw if no argument
+    - should return a string
+    - should return helloworld
+  a_function_name:
+    other_cases
+        - returns false if no arguments
+        - returns arguments is empty
+        - returns false is not a plainobject
+        - returns options property 'name' is not defined
+        - expect to returns array of arguments
+    other_other_cases:
+      - returns false if no arguments
+      - returns arguments is empty
+      - returns false is not a plainobject
+      - returns options property <name> is not defined
+      - expect to returns array of arguments
 ```
 
 ## Issues
