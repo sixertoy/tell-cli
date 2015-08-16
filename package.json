@@ -1,5 +1,5 @@
 {
-  "name": "tdd-descriptor",
+  "name": "tell-cli",
   "version": "0.1.3",
   "description": "Provides an easy and quick way to describe your stories with an YAML file",
   "preferGlobal": true,
@@ -17,6 +17,7 @@
     "url": "https://github.com/sixertoy/tdd-descriptor"
   },
   "keywords": [
+    "tell",
     "test",
     "spec",
     "unit",
