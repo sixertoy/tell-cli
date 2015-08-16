@@ -1,6 +1,6 @@
 {
   "name": "tdd-descriptor",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Provides an easy and quick way to describe your stories with an YAML file",
   "preferGlobal": true,
   "bin": {
@@ -17,7 +17,18 @@
     "url": "https://github.com/sixertoy/tdd-descriptor"
   },
   "keywords": [
-    "grunt"
+    "test",
+    "spec",
+    "unit",
+    "case",
+    "suite",
+    "mocha",
+    "yaml",
+    "yml",
+    "describe",
+    "it",
+    "cli",
+    "stories"
   ],
   "author": [
     {
