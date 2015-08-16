@@ -2,8 +2,8 @@
 
 [![Built with Grunt][grunt-img]](http://gruntjs.com/) [![MIT License][license-img]][license-url]
 
-> Generates [Mocha](https://mochajs.org) files from an YML description file<br>
-> Provides an easy way to describe your stories
+> Provides an easy and quick way to describe your stories with an YAML file
+> Can generate [Mocha](https://mochajs.org) files from stories.yml<br>
 
 ## Install
 
