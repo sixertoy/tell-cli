@@ -15,7 +15,7 @@ npm install -g tell-cli
 
 ## Usages
 
-> An yaml **stories.yml** file as describe [below](#stories.yml) must be placed in your *spec | tests |...* folder
+> An yaml file named **stories.yml** as describe [below](#stories.yml) must be placed in your *spec | tests |...* folder
 
 ```bash
 # output stories in console, doesn't generate spec files
