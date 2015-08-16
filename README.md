@@ -29,7 +29,7 @@ tell spec -g -Y
 ```
 
 <a name="stories.yml"></a>
-### stories.yml
+### spec/stories.yml
 
 ```yml
 src/filename.js:
