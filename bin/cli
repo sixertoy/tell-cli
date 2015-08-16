@@ -190,6 +190,7 @@
             //
             // recuperation des valeurs
             // des scenarios de test
+            file_content = '';
             values = spec[spec_file];
             if (!values.length) {
                 // is some DESCRIBE cases

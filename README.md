@@ -56,6 +56,10 @@ src/an_other_filename.js:
   - should return helloworld
 ```
 
+## History
+
+- v0.1.4 Fix multiple files
+
 ## Issues
 
 - Not tested under UNIX
