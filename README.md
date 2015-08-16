@@ -1,4 +1,4 @@
-# TDD Descriptor
+# Tell
 
 [![Built with Grunt][grunt-img]](http://gruntjs.com/) [![MIT License][license-img]][license-url]
 
@@ -8,13 +8,13 @@
 ## Install
 
 ```bash
-npm install -g tdd-desciptor
+npm install -g tell-cli
 ```
 
 ## Usage
 
 ```bash
-udescribe spec -g
+tell spec -g
 ```
 
 ## Issues
@@ -23,8 +23,8 @@ udescribe spec -g
 [license-img]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [license-url]: LICENSE-MIT
 
-[coverall-url]: https://coveralls.io/r/sixertoy/tdd-yml-description-generator
-[coverall-img]: https://img.shields.io/coveralls/sixertoy/tdd-yml-description-generator.svg?style=flat-square
+[coverall-url]: https://coveralls.io/r/sixertoy/tell-cli
+[coverall-img]: https://img.shields.io/coveralls/sixertoy/tell-cli.svg?style=flat-square
 
-[travis-url]: https://travis-ci.org/sixertoy/tdd-yml-description-generator
-[travis-img]: http://img.shields.io/travis/sixertoy/tdd-yml-description-generator.svg?style=flat-square
+[travis-url]: https://travis-ci.org/sixertoy/tell-cli
+[travis-img]: http://img.shields.io/travis/sixertoy/tell-cli.svg?style=flat-square

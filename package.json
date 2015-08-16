@@ -1,20 +1,19 @@
 {
   "name": "tdd-descriptor",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "YML files describes TDD cases",
   "bin": {
-    "udescribe": "./bin/tdd-descriptor"
+    "tell": "./bin/cli"
   },
   "scripts": {
-    "clean": "rm -rf node_modules",
-    "start": "grunt wrap"
+    "clear": "rm -rf node_modules"
   },
   "engines": {
     "node": ">=0.12.5"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sixertoy/tdd-yml-description-generator"
+    "url": "https://github.com/sixertoy/tdd-descriptor"
   },
   "keywords": [
     "grunt"
@@ -27,38 +26,27 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sixertoy/tdd-yml-description-generator/issues"
+    "url": "https://github.com/sixertoy/tdd-descriptor/issues"
   },
-  "homepage": "https://github.com/sixertoy/tdd-yml-description-generator",
+  "homepage": "https://github.com/sixertoy/tdd-descriptor",
   "dependencies": {
     "chalk": "^1.1.0",
-    "class-extend": "",
     "commander": "^2.8.1",
     "esformatter": "^0.7.3",
     "fs-extra": "^0.23.1",
     "inquirer": "^0.9.0",
     "is-valid-path": "^0.1.1",
     "js-yaml": "^3.3.1",
-    "lodash": "",
-    "lodash.foreach": "^3.0.3",
-    "lodash.template": "^3.6.2",
-    "mkdirp": "^0.5.1",
-    "object-assign": ""
+    "lodash.isarray": "^3.0.4",
+    "lodash.template": "^3.6.2"
   },
   "devDependencies": {
-    "grunt": "",
-    "grunt-bump": "",
-    "grunt-contrib-clean": "^0.6.0",
-    "grunt-contrib-connect": "",
-    "grunt-contrib-jshint": "",
-    "grunt-contrib-watch": "",
-    "grunt-coveralls": "",
-    "grunt-jasmine-node-coverage": "",
-    "grunt-jsbeautifier": "",
-    "grunt-markdown": "",
-    "grunt-rename": "^0.1.4",
-    "grunt-wrap": "^0.3.0",
-    "load-grunt-config": "",
+    "gulp": "^3.9.0",
+    "gulp-bump": "^0.3.1",
+    "gulp-jshint": "^1.11.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-wrap": "^0.11.0",
+    "jshint-stylish": "^2.0.1",
     "sinon": ""
   }
 }

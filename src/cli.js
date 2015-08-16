@@ -16,6 +16,7 @@
         },
         // lodash
         _ = require('lodash.template'),
+        isarray = require('lodash.isarray'),
         // requires
         path = require('path'),
         chalk = require('chalk'),
@@ -24,7 +25,7 @@
         inquirer = require('inquirer'),
         commander = require('commander'),
         esformatter = require('esformatter'),
-        isValidPath = require('is-valid-path');
+        isvalidpath = require('is-valid-path');
 
     //
     // traitement des params args du cli
@@ -121,7 +122,7 @@
      */
     function parseItCases(cases) {
         var result = '',
-            compiled = _('it(\'<%= description %>\', function(){});\n');
+            compiled = _('it(\'<%- description %>\', function(){});\n');
         cases.forEach(function (value) {
             result += compiled({
                 description: value
@@ -130,13 +131,26 @@
         return result;
     }
 
-    /*
-    function parseStories() {
-        var result = '',
-            compiled = _('describe(\'<%= label %>\', function(){<%= value %>});\n');
-        return '';
+    function parseStories(values) {
+        var cases,
+            result = '',
+            compiled = _('describe(\'<%- label %>\', function(){<%= value %>});\n\n');
+        Object.keys(values).forEach(function(label){
+            cases = values[label];
+            if(isarray(cases)){
+                result += compiled({
+                    label: label,
+                    value: parseItCases(cases)
+                });
+            } else {
+                result += compiled({
+                    label: label,
+                    value: parseStories(cases)
+                });
+            }
+        });
+        return result;
     }
-    */
 
     /**
      *
@@ -156,11 +170,12 @@
                     value: defaults.indent
                 }
             },
-            compiled = _('/*jshint unused: false */\n/*jslint indent: 4, nomen: true */\n/*global __dirname, jasmine, process, require, define, describe, xdescribe, it, xit, expect, beforeEach, afterEach, afterLast, console */\n(function(){\n\t\'use strict\';\n\t<%= body %>}());\n');
+            compiled = _('/*jshint unused: false */\n/*jslint indent: 4, nomen: true */\n/*global __dirname, jasmine, process, require, define, describe, xdescribe, it, xit, expect, beforeEach, afterEach, afterLast, console */\n(function(){\n\t\'use strict\';\n\tvar cwd = process.cwd(),\path = require(\'path\'),\nexpect = require(\'chai\'),\nnsinon = require(\'sinon\'),\n<%= name %> = require(path.join(cwd, \'<%= file %>\'));\n\ndescribe(\'<%- name %>\', function(){\n\n<%= body %>});\n\n}());\n');
 
         spec_files.forEach(function (spec_file) {
+
             // check si le chemin de fichier est valide
-            if (!isValidPath(spec_file)) {
+            if (!isvalidpath(spec_file)) {
                 return false;
             }
             //
@@ -176,8 +191,7 @@
             values = spec[spec_file];
             if (!values.length) {
                 // is some DESCRIBE cases
-                // file_content += parseStories(values);
-                console.log('todo parse describe');
+                file_content += parseStories(values);
             } else {
                 // is an IT case
                 file_content += parseItCases(values);
@@ -185,13 +199,16 @@
             //
             // templating du body
             body_content = esformatter.format(compiled({
-                body: file_content
+                file: spec_file,
+                body: file_content,
+                name: path.basename(spec_file, path.extname(spec_file))
             }), format_options);
             //
             // sir le fichier existe
             if (will_prompt && commander.yes) {
                 output_file = path.relative(defaults.cwd, output_file);
-                process.stderr.write(chalk.bold.gray('warn: ') + output_file + chalk.bold.gray('wouldn\'t not overwritten\n'));
+                process.stderr.write(chalk.bold.gray('warn: ') + output_file + ' ' + chalk.bold.gray('wouldn\'t not be overwritten\n'));
+                //
             } else if (will_prompt && !commander.yes) {
                 question = createQuestion(output_file, prompts.length);
                 prompts_data.push({
@@ -235,7 +252,7 @@
     // construction du chemin
     // vers le fichier de description
     defaults.folder = commander.args[0];
-    description_file = path.join(defaults.cwd, defaults.folder, 'description.yml');
+    description_file = path.join(defaults.cwd, defaults.folder, 'stories.yml');
 
     // si l'argment generate
     // n'a pas ete sette par l'user
@@ -254,10 +271,5 @@
         console.log(e.stack);
         process.exit(1);
     }
-    //
-    process.on('SIGINT', function () {
-        process.stderr.write(chalk.bold.red('Error: ') + chalk.bold('aborted by user'));
-        process.exit(1);
-    });
 
 }());
