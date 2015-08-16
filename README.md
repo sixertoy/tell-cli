@@ -1,4 +1,4 @@
-# Tell
+# Tell-cli
 
 [![Built with Grunt][grunt-img]](http://gruntjs.com/) [![MIT License][license-img]][license-url]
 
@@ -11,10 +11,17 @@
 npm install -g tell-cli
 ```
 
-## Usage
+## Usages
 
 ```bash
+# output stories in console, doesn't generate spec files
+tell spec
+# prompts for overwite specs files - default to false
+tell spec --generate
 tell spec -g
+# doesn't prompts
+tell spec --generate --yes
+tell spec -g -Y
 ```
 
 ## Issues

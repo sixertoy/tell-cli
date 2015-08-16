@@ -1,10 +1,10 @@
-!bin
-!bin/
-!bin/*
-grunt/
+!bin/cli
+!/bin/cli
 src/
 .editorconfig
 .gitattributes
 .gitignore
 .jshintrc
 Gruntfile.js
+gulpfile.js
+tasks.json

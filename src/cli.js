@@ -204,10 +204,9 @@
                 name: path.basename(spec_file, path.extname(spec_file))
             }), format_options);
             //
-            // sir le fichier existe
+            // si le fichier existe
             if (will_prompt && commander.yes) {
-                output_file = path.relative(defaults.cwd, output_file);
-                process.stderr.write(chalk.bold.gray('warn: ') + output_file + ' ' + chalk.bold.gray('wouldn\'t not be overwritten\n'));
+                writeSpecFile(output_file, body_content);
                 //
             } else if (will_prompt && !commander.yes) {
                 question = createQuestion(output_file, prompts.length);
