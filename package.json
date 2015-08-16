@@ -1,7 +1,7 @@
 {
   "name": "tdd-descriptor",
   "version": "0.1.2",
-  "description": "YML files describes TDD cases",
+  "description": "Provides an easy and quick way to describe your stories with an YAML file",
   "preferGlobal": true,
   "bin": {
     "tell": "./bin/cli"
