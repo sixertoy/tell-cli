@@ -204,5 +204,4 @@ bower_components/
 # Customs
 #
 # ##############################
-!bin/
-!/bin/
+!/bin/cli
