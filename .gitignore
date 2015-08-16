@@ -204,4 +204,5 @@ bower_components/
 # Customs
 #
 # ##############################
-!bin/*.js
+!bin/
+!/bin/
