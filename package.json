@@ -1,6 +1,6 @@
 {
   "name": "tell-cli",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Provides an easy and quick way to describe your stories with an YAML file",
   "preferGlobal": true,
   "bin": {
@@ -51,6 +51,7 @@
     "is-valid-path": "^0.1.1",
     "js-yaml": "^3.3.1",
     "lodash.isarray": "^3.0.4",
+    "lodash.isempty": "^3.0.4",
     "lodash.template": "^3.6.2"
   },
   "devDependencies": {

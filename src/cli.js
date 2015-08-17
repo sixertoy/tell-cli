@@ -16,6 +16,7 @@
         },
         // lodash
         _ = require('lodash.template'),
+        isempty = require('lodash.isempty'),
         isarray = require('lodash.isarray'),
         // requires
         path = require('path'),
@@ -190,7 +191,9 @@
             // des scenarios de test
             file_content = '';
             values = spec[spec_file];
-            if (!values.length) {
+            if(isempty(values)){
+                file_content = '';
+            } else if (!values.length) {
                 // is some DESCRIBE cases
                 file_content += parseStories(values);
             } else {
