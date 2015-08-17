@@ -136,9 +136,9 @@
         var cases,
             result = '',
             compiled = _('describe(\'<%- label %>\', function(){<%= value %>});');
-        Object.keys(values).forEach(function(label){
+        Object.keys(values).forEach(function (label) {
             cases = values[label];
-            if(isarray(cases)){
+            if (isarray(cases)) {
                 result += compiled({
                     label: label,
                     value: parseItCases(cases)
@@ -171,7 +171,7 @@
                     value: defaults.indent
                 }
             },
-            compiled = _('/*jshint unused: false *//*jslint indent: 4, nomen: true *//*global __dirname, jasmine, process, require, define, describe, xdescribe, it, xit, expect, beforeEach, afterEach, afterLast, console */(function(){\t\'use strict\';\tvar cwd = process.cwd(),\path = require(\'path\'),expect = require(\'chai\').expect,sinon = require(\'sinon\'),<%= name %> = require(path.join(cwd, \'<%= file %>\'));describe(\'<%- name %>\', function(){beforeEach(function(){});afterEach(function(){});<%= body %>});}());');
+            compiled = _('/*jshint unused: false *//*jslint indent: 4, nomen: true *//*global __dirname, jasmine, process, require, define, describe, xdescribe, it, xit, expect, beforeEach, afterEach, afterLast, console */(function(){\t\'use strict\';\tvar cwd = process.cwd(),path = require(\'path\'),expect = require(\'chai\').expect,sinon = require(\'sinon\'),<%= name %> = require(path.join(cwd, \'<%= file %>\'));describe(\'<%- name %>\', function(){beforeEach(function(){});afterEach(function(){});<%= body %>});}());');
 
         spec_files.forEach(function (spec_file) {
 
@@ -191,7 +191,7 @@
             // des scenarios de test
             file_content = '';
             values = spec[spec_file];
-            if(isempty(values)){
+            if (isempty(values)) {
                 file_content = '';
             } else if (!values.length) {
                 // is some DESCRIBE cases
