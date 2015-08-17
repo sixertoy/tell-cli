@@ -1,6 +1,6 @@
 {
   "name": "tell-cli",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Provides an easy and quick way to describe your stories with an YAML file",
   "preferGlobal": true,
   "bin": {
