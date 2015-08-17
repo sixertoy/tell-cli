@@ -8,7 +8,6 @@
         description_file, // fichier de description des scenarios
         defaults = {
             files: [], // nombre de documents a traiter
-            indent: '    ',
             extension: '.js',
             input_folder: '',
             cwd: process.cwd(),
@@ -26,7 +25,19 @@
         inquirer = require('inquirer'),
         commander = require('commander'),
         esformatter = require('esformatter'),
-        isvalidpath = require('is-valid-path');
+        isvalidpath = require('is-valid-path'),
+        // template
+        header_template = '/*jshint unused: false */\n' +
+        '/*jslint indent: 4, nomen: true */\n' +
+        '/*global __dirname, jasmine, process, require, define, describe, xdescribe, it, xit, expect, beforeEach, afterEach, afterLast, console */\n' +
+        '(function(){\n' +
+        '\t\'use strict\';\n' +
+        '\tvar //variables\n' +
+        'cwd = process.cwd(),\n' +
+        '// requires\n' +
+        'path = require(\'path\'),\n' +
+        'sinon = require(\'sinon\'),\n' +
+        'expect = require(\'chai\').expect,\n';
 
     //
     // traitement des params args du cli
@@ -123,7 +134,7 @@
      */
     function parseItCases(cases) {
         var result = '',
-            compiled = _('it(\'<%- description %>\', function(){});');
+            compiled = _('\nit(\'<%- description %>\', function(){});');
         cases.forEach(function (value) {
             result += compiled({
                 description: value
@@ -135,7 +146,7 @@
     function parseStories(values) {
         var cases,
             result = '',
-            compiled = _('describe(\'<%- label %>\', function(){<%= value %>});');
+            compiled = _('\ndescribe(\'<%- label %>\', function(){<%= value %>});');
         Object.keys(values).forEach(function (label) {
             cases = values[label];
             if (isarray(cases)) {
@@ -160,7 +171,7 @@
      *
      */
     function parseSpecs(spec) {
-        var values, output_file, will_prompt, question, data,
+        var values, output_file, will_prompt, question, data, compiled,
             prompts = [],
             prompts_data = [],
             file_content = '',
@@ -168,10 +179,25 @@
             spec_files = Object.keys(spec),
             format_options = {
                 indent: {
-                    value: defaults.indent
+                    value: '    '
+                },
+                whiteSpace: {
+                    before: {
+                        FunctionName: 1,
+                        FunctionReservedWord: 1,
+                        FunctionDeclarationOpeningBrace: 1
+                    }
                 }
-            },
-            compiled = _('/*jshint unused: false *//*jslint indent: 4, nomen: true *//*global __dirname, jasmine, process, require, define, describe, xdescribe, it, xit, expect, beforeEach, afterEach, afterLast, console */(function(){\t\'use strict\';\tvar cwd = process.cwd(),path = require(\'path\'),expect = require(\'chai\').expect,sinon = require(\'sinon\'),<%= name %> = require(path.join(cwd, \'<%= file %>\'));describe(\'<%- name %>\', function(){beforeEach(function(){});afterEach(function(){});<%= body %>});}());');
+            };
+
+        compiled = header_template + '<%= name %> = require(path.join(cwd, \'<%= file %>\'));' +
+            '\ndescribe(\'<%- name %>\', function(){' +
+            '\nbeforeEach(function(){});' +
+            '\nafterEach(function(){});' +
+            '<%= body %>' +
+            '});' +
+            '}());';
+        compiled = _(compiled);
 
         spec_files.forEach(function (spec_file) {
 
