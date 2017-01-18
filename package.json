@@ -1,47 +1,27 @@
 {
   "name": "tell-cli",
   "version": "0.1.6",
-  "description": "Provides an easy and quick way to describe your stories with an YAML file",
   "preferGlobal": true,
   "bin": {
     "tell": "./bin/_tell"
   },
-  "scripts": {
-    "clear": "rm -rf node_modules"
-  },
   "engines": {
-    "node": ">=0.12.5"
+    "node": ">=4.4.1"
   },
+  "description": "Provides an easy and quick way to describe your tests stories with an YAML file",
+  "keywords": ["tell", "test", "spec", "unit", "case", "suite", "mocha", "yaml", "yml",
+    "describe", "it", "cli", "stories"],
+  "license": "MIT",
+  "author": [{
+    "name": "sixertoy",
+    "email": "sixertoy.github@gmail.com"
+  }],
+  "bugs": "https://github.com/sixertoy/tell-cli/issues",
+  "homepage": "https://github.com/sixertoy/tell-cli",
   "repository": {
     "type": "git",
     "url": "https://github.com/sixertoy/tell-cli"
   },
-  "keywords": [
-    "tell",
-    "test",
-    "spec",
-    "unit",
-    "case",
-    "suite",
-    "mocha",
-    "yaml",
-    "yml",
-    "describe",
-    "it",
-    "cli",
-    "stories"
-  ],
-  "author": [
-    {
-      "name": "sixertoy",
-      "email": "sixertoy.github@gmail.com"
-    }
-  ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/sixertoy/tell-cli/issues"
-  },
-  "homepage": "https://github.com/sixertoy/tell-cli",
   "dependencies": {
     "chalk": "1.1.3",
     "commander": "2.9.0",
@@ -60,5 +40,8 @@
     "husky": "0.12.0",
     "mocha": "3.2.0",
     "sinon": "1.17.7"
+  },
+  "scripts": {
+    "clear": "rm -rf node_modules"
   }
 }

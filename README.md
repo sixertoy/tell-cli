@@ -1,6 +1,6 @@
 # Tell-cli
 
-[![Built with Grunt][grunt-img]](http://gruntjs.com/) [![MIT License][license-img]][license-url]
+[![MIT License][license-img]][license-url]
 
 > Provides an easy and quick way to describe your stories with an YAML file
 > Can generate [Mocha](https://mochajs.org) files from stories.yml<br>
@@ -77,7 +77,6 @@ src/an_other_filename.js:
 - [**lodash.isarray** ^3.0.4](https://www.npmjs.com/package/lodash.isarray)
 - [**lodash.template** ^3.6.2](https://www.npmjs.com/package/lodash.template)
 
-[grunt-img]: https://cdn.gruntjs.com/builtwith.png
 [license-img]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [license-url]: LICENSE-MIT
 
