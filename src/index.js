@@ -1,13 +1,13 @@
-/*jslint indent: 4, nomen: true, plusplus: true */
-/*globals process, require, console */
-(function () {
+/* global process, require, console */
+(function() {
 
     'use strict';
 
-    var // variables
-        description_file, // fichier de description des scenarios
+    // fichier de description des scenarios
+    var descriptionFile = null,
         defaults = {
-            files: [], // nombre de documents a traiter
+            // nombre de documents a traiter
+            files: [],
             extension: '.js',
             input_folder: '',
             cwd: process.cwd(),
@@ -27,7 +27,7 @@
         esformatter = require('esformatter'),
         isvalidpath = require('is-valid-path'),
         // template
-        header_template = '/*jshint unused: false */\n' +
+        headerTemplate = '/*jshint unused: false */\n' +
         '/*jslint indent: 4, nomen: true */\n' +
         '/*global __dirname, jasmine, process, require, define, describe, xdescribe, it, xit, expect, beforeEach, afterEach, afterLast, console */\n' +
         '(function(){\n' +
@@ -56,19 +56,20 @@
      * du fichier YAML
      *
      */
-    function outputInConsole(file) {
+    function outputInConsole (file) {
+        var rstream = null;
         try {
             process.stdout.write(chalk.bold.green('describing: ') + chalk.bold(file + '\n'));
-            var rstream = fse.createReadStream(file, {
+            rstream = fse.createReadStream(file, {
                 encoding: 'utf8'
             });
             rstream
-                .on('error', function (err) {
+                .on('error', function(err) {
                     throw err;
                 })
-                .on('data', function (data) {
+                .on('data', function(data) {
                     process.stdout.write(data);
-                }).on('end', function () {
+                }).on('end', function() {
                     process.exit(0);
                 });
         } catch (e) {
@@ -83,7 +84,7 @@
      * de sortie
      *
      */
-    function fileExists(file) {
+    function fileExists (file) {
         try {
             fse.statSync(file);
             return true;
@@ -97,7 +98,7 @@
      * Creation d'un fichier de test
      *
      */
-    function writeSpecFile(file, content, overwrite) {
+    function writeSpecFile (file, content, overwrite) {
         try {
             process.stderr.write(chalk.gray('writing: ' + file + '\n'));
             if (overwrite) {
@@ -117,8 +118,8 @@
      *
      *
      */
-    function createQuestion(file, index) {
-        file = path.relative(defaults.cwd, file);
+    function createQuestion (pfile, index) {
+        var file = path.relative(defaults.cwd, pfile);
         return {
             default: false,
             type: 'confirm',
@@ -132,10 +133,10 @@
      *
      *
      */
-    function parseItCases(cases) {
+    function parseItCases (cases) {
         var result = '',
             compiled = _('\nit(\'<%- description %>\', function(){});');
-        cases.forEach(function (value) {
+        cases.forEach(function(value) {
             result += compiled({
                 description: value
             });
@@ -143,11 +144,11 @@
         return result;
     }
 
-    function parseStories(values) {
-        var cases,
-            result = '',
+    function parseStories (values) {
+        var result = '',
+            cases = null,
             compiled = _('\ndescribe(\'<%- label %>\', function(){<%= value %>});');
-        Object.keys(values).forEach(function (label) {
+        Object.keys(values).forEach(function(label) {
             cases = values[label];
             if (isarray(cases)) {
                 result += compiled({
@@ -170,14 +171,19 @@
      * Pour créer les fichiers de tests
      *
      */
-    function parseSpecs(spec) {
-        var values, output_file, will_prompt, question, data, compiled,
+    function parseSpecs (spec) {
+        var values = null,
+            outputFile = null,
+            willPrompt = null,
+            question = null,
+            data = null,
+            compiled = null,
             prompts = [],
-            prompts_data = [],
-            file_content = '',
-            body_content = '',
-            spec_files = Object.keys(spec),
-            format_options = {
+            promptsData = [],
+            fileContent = '',
+            bodyContent = '',
+            specFiles = Object.keys(spec),
+            formatOptions = {
                 indent: {
                     value: '    '
                 },
@@ -190,7 +196,7 @@
                 }
             };
 
-        compiled = header_template + '<%= name %> = require(path.join(cwd, \'<%= file %>\'));' +
+        compiled = headerTemplate + '<%= name %> = require(path.join(cwd, \'<%= file %>\'));' +
             '\ndescribe(\'<%- name %>\', function(){' +
             '\nbeforeEach(function(){});' +
             '\nafterEach(function(){});' +
@@ -199,64 +205,64 @@
             '}());';
         compiled = _(compiled);
 
-        spec_files.forEach(function (spec_file) {
+        specFiles.forEach(function(specFile) {
 
             // check si le chemin de fichier est valide
-            if (!isvalidpath(spec_file)) {
+            if (!isvalidpath(specFile)) {
                 return false;
             }
             //
             // nom du fichier de sortie
-            output_file = path.join(defaults.cwd, defaults.folder, path.normalize(spec_file));
-            output_file = output_file.replace(defaults.extension, defaults.spec_extension);
+            outputFile = path.join(defaults.cwd, defaults.folder, path.normalize(specFile));
+            outputFile = outputFile.replace(defaults.extension, defaults.spec_extension);
             //
             // check si le fichier existe
-            will_prompt = fileExists(output_file);
+            willPrompt = fileExists(outputFile);
             //
             // recuperation des valeurs
             // des scenarios de test
-            file_content = '';
-            values = spec[spec_file];
+            fileContent = '';
+            values = spec[specFile];
             if (isempty(values)) {
-                file_content = '';
+                fileContent = '';
             } else if (!values.length) {
                 // is some DESCRIBE cases
-                file_content += parseStories(values);
+                fileContent += parseStories(values);
             } else {
                 // is an IT case
-                file_content += parseItCases(values);
+                fileContent += parseItCases(values);
             }
             //
             // templating du body
-            body_content = esformatter.format(compiled({
-                file: spec_file,
-                body: file_content,
-                name: path.basename(spec_file, path.extname(spec_file))
-            }), format_options);
+            bodyContent = esformatter.format(compiled({
+                file: specFile,
+                body: fileContent,
+                name: path.basename(specFile, path.extname(specFile))
+            }), formatOptions);
             //
             // si le fichier existe
-            if (will_prompt && commander.yes) {
-                writeSpecFile(output_file, body_content);
+            if (willPrompt && commander.yes) {
+                writeSpecFile(outputFile, bodyContent);
                 //
-            } else if (will_prompt && !commander.yes) {
-                question = createQuestion(output_file, prompts.length);
-                prompts_data.push({
-                    file: output_file,
-                    content: body_content
+            } else if (willPrompt && !commander.yes) {
+                question = createQuestion(outputFile, prompts.length);
+                promptsData.push({
+                    file: outputFile,
+                    content: bodyContent
                 });
                 prompts.push(question);
             } else {
-                writeSpecFile(output_file, body_content);
+                writeSpecFile(outputFile, bodyContent);
             }
         });
         // si il y a des question
         // on envoi le prompt pour l'user
         if (prompts.length) {
-            inquirer.prompt(prompts, function (answers) {
+            inquirer.prompt(prompts, function(answers) {
                 Object.keys(answers)
-                    .forEach(function (key, index) {
+                    .forEach(function(key, index) {
                         if (answers[key]) {
-                            data = prompts_data[index];
+                            data = promptsData[index];
                             writeSpecFile(data.file, data.content);
                         }
                     });
@@ -281,19 +287,19 @@
     // construction du chemin
     // vers le fichier de description
     defaults.folder = commander.args[0];
-    description_file = path.join(defaults.cwd, defaults.folder, 'stories.yml');
+    descriptionFile = path.join(defaults.cwd, defaults.folder, 'stories.yml');
 
     // si l'argment generate
     // n'a pas ete sette par l'user
     // on redirige la sortie vers la console
     if (!commander.generate) {
-        return outputInConsole(description_file);
+        return outputInConsole(descriptionFile);
     }
     //
     // charge le fichier de description
     // depuis le folder en argument du cli
     try {
-        yaml.safeLoadAll(fse.readFileSync(description_file, 'utf8'), parseSpecs);
+        yaml.safeLoadAll(fse.readFileSync(descriptionFile, 'utf8'), parseSpecs);
     } catch (e) {
         // erreur lors du process
         process.stderr.write(chalk.bold.red('Error: ') + chalk.bold(e.message) + '\n');
