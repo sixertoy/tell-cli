@@ -42,25 +42,6 @@
     "url": "https://github.com/sixertoy/tell-cli/issues"
   },
   "homepage": "https://github.com/sixertoy/tell-cli",
-  "dependencies": {
-    "chalk": "^1.1.0",
-    "commander": "^2.8.1",
-    "esformatter": "^0.7.3",
-    "fs-extra": "^0.23.1",
-    "inquirer": "^0.9.0",
-    "is-valid-path": "^0.1.1",
-    "js-yaml": "^3.3.1",
-    "lodash.isarray": "^3.0.4",
-    "lodash.isempty": "^3.0.4",
-    "lodash.template": "^3.6.2"
-  },
-  "devDependencies": {
-    "gulp": "^3.9.0",
-    "gulp-bump": "^0.3.1",
-    "gulp-jshint": "^1.11.2",
-    "gulp-rename": "^1.2.2",
-    "gulp-wrap": "^0.11.0",
-    "jshint-stylish": "^2.0.1",
-    "sinon": ""
-  }
+  "dependencies": {},
+  "devDependencies": {}
 }
