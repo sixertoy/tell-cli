@@ -4,7 +4,7 @@
   "description": "Provides an easy and quick way to describe your stories with an YAML file",
   "preferGlobal": true,
   "bin": {
-    "tell": "./bin/cli"
+    "tell": "./bin/_tell"
   },
   "scripts": {
     "clear": "rm -rf node_modules"
