@@ -1,6 +1,6 @@
-!bin/cli
-!/bin/cli
-src/
+!bin/_tell
+!/bin/_tell
+!src/index
 .editorconfig
 .gitattributes
 .gitignore
