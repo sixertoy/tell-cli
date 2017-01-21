@@ -1,0 +1,3 @@
+lib/stories-nono.js:
+  parse:
+    - should return false, wrong arguments
