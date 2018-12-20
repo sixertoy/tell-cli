@@ -1,6 +1,6 @@
 {
   "name": "tell-cli",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "preferGlobal": true,
   "bin": {
     "tell": "./bin/_tell"
